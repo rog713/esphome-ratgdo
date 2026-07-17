@@ -878,6 +878,13 @@ void RATGDOComponent::door_close()
     // of whether an obstruction sensor is present.
     enc_intended_dir_ = -1;
 #endif
+    // A dry-contact controller has a dedicated CLOSE output. The obstruction
+    // pulse detection below is specific to openers whose protocol may reject an
+    // explicit CLOSE command when no photoeyes are detected; it must not replace
+    // the dedicated dry-contact output with the single-button TOGGLE output.
+#ifdef PROTOCOL_DRYCONTACT
+    this->door_action(DoorAction::CLOSE);
+#else
     if (this->flags_.obstruction_sensor_detected) {
         this->door_action(DoorAction::CLOSE);
     } else if (*this->door_state == DoorState::OPEN || *this->door_state == DoorState::STOPPED) {
@@ -888,6 +895,7 @@ void RATGDOComponent::door_close()
         ESP_LOGD(TAG, "No obstruction sensors detected. Close using TOGGLE.");
         this->door_action(DoorAction::TOGGLE);
     }
+#endif
 
     if (*this->closing_duration > 0) {
         // query state in case we don't get a status message

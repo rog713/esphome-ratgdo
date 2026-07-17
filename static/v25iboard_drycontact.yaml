@@ -7,8 +7,8 @@ substitutions:
   input_obst_pin: D7
   dry_contact_open_pin: D5
   dry_contact_close_pin: D6
-  discrete_open_pin: D0
-  discrete_close_pin: D8
+  discrete_open_pin: D8
+  discrete_close_pin: D0
 
 web_server:
   local: true
