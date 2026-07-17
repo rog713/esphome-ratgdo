@@ -5,9 +5,9 @@ esphome:
 external_components:
   - source:
       type: git
-      url: https://github.com/ratgdo/esphome-ratgdo
-      ref: main
-    refresh: 1s
+      url: https://github.com/rog713/esphome-ratgdo
+      ref: codex/drycontact-discrete-close
+      refresh: 1s
   # - source:
   #     type: local
   #     path: components
