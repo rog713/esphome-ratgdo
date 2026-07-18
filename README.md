@@ -64,3 +64,43 @@ ratgdo:
 ```
 
 The `id` must match the `id` of the existing `ratgdo` component in your config (e.g. `ratgdov25` for v2.5 boards). This setting tells the obstruction sensor to treat LOW as the "asleep" state instead of the ESP32 default of HIGH.
+
+## v2.5i dry-contact discrete outputs
+
+The `drycontact-discrete-close` branch assigns a separate output to each door direction on the v2.5i ESP8266 board.
+
+| Function | Pin |
+|----------|-----|
+| Open output | D8 |
+| Close output | D1 |
+| Open limit input | D5 |
+| Close limit input | D6 |
+| Obstruction input | D7 |
+| Door-state input | D2 |
+
+D0 is unused. GPIO16 can change state during an ESP8266 restart, so it should not be connected to either door-control input.
+
+The normal single-button output on D1 is treated as a dedicated Close output on this branch. An Open command pulses only D8, and a Close command pulses only D1. The Toggle button is omitted because D1 is no longer a bidirectional control output.
+
+Use the branch as an ESPHome package:
+
+```yaml
+substitutions:
+  id_prefix: ratgdov25i
+  uart_rx_pin: D2
+  dry_contact_open_pin: D5
+  dry_contact_close_pin: D6
+  discrete_open_pin: D8
+  discrete_close_pin: D1
+  input_obst_pin: D7
+
+packages:
+  remote_package:
+    url: https://github.com/rog713/esphome-ratgdo
+    ref: drycontact-discrete-close
+    files:
+      - base_drycontact.yaml
+    refresh: 1d
+```
+
+The garage door opener's photoeyes and force-reversal protection must remain connected and operational. Test Open, Close, and restart behavior with the opener control wires disconnected before placing the installation into service.
