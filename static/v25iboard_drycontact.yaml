@@ -2,12 +2,12 @@
 substitutions:
   id_prefix: ratgdov25i
   friendly_name: "ratgdov2.5i"
-  uart_tx_pin: D1
   uart_rx_pin: D2
   input_obst_pin: D7
   dry_contact_open_pin: D5
   dry_contact_close_pin: D6
   discrete_open_pin: D8
+  discrete_close_pin: D1
 
 web_server:
   local: true

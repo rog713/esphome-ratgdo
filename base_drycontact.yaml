@@ -24,7 +24,8 @@ text_sensor:
 
 ratgdo:
   id: ${id_prefix}
-  output_gdo_pin: ${uart_tx_pin}
+  # The dry-contact fallback output is dedicated to CLOSE in this branch.
+  output_gdo_pin: ${discrete_close_pin}
   input_gdo_pin: ${uart_rx_pin}
   input_obst_pin: ${input_obst_pin}
   dry_contact_open_sensor: ${id_prefix}_dry_contact_open
