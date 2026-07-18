@@ -82,6 +82,8 @@ D0 is unused. GPIO16 can change state during an ESP8266 restart, so it should no
 
 The normal single-button output on D1 is treated as a dedicated Close output on this branch. An Open command pulses only D8, and a Close command pulses only D1. The Toggle button is omitted because D1 is no longer a bidirectional control output.
 
+The standard ratgdo close path uses Toggle when it does not detect the obstruction sensor's pulse train. That fallback prevents the dedicated Close output from being used on a dry-contact installation without a compatible obstruction signal. This branch sends the explicit Close action for the dry-contact protocol regardless of that detection flag, so D1 still receives the Close pulse. Obstruction status reporting remains available when a compatible signal is connected.
+
 Use the branch as an ESPHome package:
 
 ```yaml
@@ -103,4 +105,4 @@ packages:
     refresh: 1d
 ```
 
-The garage door opener's photoeyes and force-reversal protection must remain connected and operational. Test Open, Close, and restart behavior with the opener control wires disconnected before placing the installation into service.
+This change does not bypass the garage door opener's safety circuit. The opener's photoeyes and force-reversal protection must remain connected and operational. Test Open, Close, and restart behavior with the opener control wires disconnected before placing the installation into service.
