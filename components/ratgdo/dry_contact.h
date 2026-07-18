@@ -44,24 +44,15 @@ namespace dry_contact {
         void set_discrete_open_pin(InternalGPIOPin* pin)
         {
             this->discrete_open_pin_ = pin;
-            // Preload the inactive level before enabling output mode. This
-            // avoids briefly driving the relay from a retained output latch
-            // during ESP8266 startup.
-            this->discrete_open_pin_->digital_write(false);
             this->discrete_open_pin_->setup();
             this->discrete_open_pin_->pin_mode(gpio::FLAG_OUTPUT);
-            this->discrete_open_pin_->digital_write(false);
         }
 
         void set_discrete_close_pin(InternalGPIOPin* pin)
         {
             this->discrete_close_pin_ = pin;
-            // GPIO16 (D0 on ESP8266) can retain its output latch across a
-            // software reset, so force the inactive level before output mode.
-            this->discrete_close_pin_->digital_write(false);
             this->discrete_close_pin_->setup();
             this->discrete_close_pin_->pin_mode(gpio::FLAG_OUTPUT);
-            this->discrete_close_pin_->digital_write(false);
         }
 
         Result call(Args args);
