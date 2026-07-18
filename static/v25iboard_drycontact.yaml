@@ -26,12 +26,12 @@ esp8266:
   restore_from_flash: true
 
 dashboard_import:
-  package_import_url: github://rog713/esphome-ratgdo/v25iboard_drycontact.yaml@codex/drycontact-discrete-close
+  package_import_url: github://rog713/esphome-ratgdo/v25iboard_drycontact.yaml@drycontact-discrete-close
 
 packages:
   remote_package:
     url: https://github.com/rog713/esphome-ratgdo
-    ref: codex/drycontact-discrete-close
+    ref: drycontact-discrete-close
     files: [base_drycontact.yaml]
     refresh: 1s
   # remote_package: !include
