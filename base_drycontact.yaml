@@ -30,7 +30,6 @@ ratgdo:
   dry_contact_open_sensor: ${id_prefix}_dry_contact_open
   dry_contact_close_sensor: ${id_prefix}_dry_contact_close
   discrete_open_pin: ${discrete_open_pin}
-  discrete_close_pin: ${discrete_close_pin}
   protocol: drycontact
 
 ota:
@@ -99,11 +98,3 @@ button:
     id: ${id_prefix}_safe_mode
     name: "Safe mode boot"
     entity_category: diagnostic
-
-  - platform: template
-    id: ${id_prefix}_toggle_door
-    name: "Toggle door"
-    on_press:
-      then:
-        lambda: !lambda |-
-          id($id_prefix).door_toggle();

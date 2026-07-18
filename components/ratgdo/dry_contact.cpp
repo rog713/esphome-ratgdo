@@ -122,6 +122,7 @@ namespace dry_contact {
             this->ratgdo_->set_timeout(500, [this] {
                 this->discrete_open_pin_->digital_write(0);
             });
+            return;
         }
 
         if (action == DoorAction::CLOSE && this->discrete_close_pin_ != nullptr) {
@@ -129,9 +130,13 @@ namespace dry_contact {
             this->ratgdo_->set_timeout(500, [this] {
                 this->discrete_close_pin_->digital_write(0);
             });
+            return;
         }
 
-        this->tx_pin_->digital_write(1); // Single button control
+        // Use the former single-button output as the fallback action output.
+        // On the v2.5i custom dry-contact configuration this makes D1 the
+        // dedicated CLOSE output while D8 remains the dedicated OPEN output.
+        this->tx_pin_->digital_write(1);
         this->ratgdo_->set_timeout(500, [this] {
             this->tx_pin_->digital_write(0);
         });
