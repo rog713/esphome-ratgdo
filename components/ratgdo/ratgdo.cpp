@@ -860,6 +860,11 @@ void RATGDOComponent::door_close()
     }
 
     if (*this->door_state == DoorState::OPENING) {
+#ifdef PROTOCOL_DRYCONTACT
+        // The gate reverses on its own CLOSE input; there is no stop output to wait on.
+        this->door_action(DoorAction::CLOSE);
+        return;
+#endif
         // have to stop door first, otherwise close command is ignored
         this->door_action(DoorAction::STOP);
         this->on_door_state([this](DoorState s) {

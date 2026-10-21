@@ -6,7 +6,7 @@ external_components:
   - source:
       type: git
       url: https://github.com/rog713/esphome-ratgdo
-      ref: drycontact-discrete-close
+      ref: drycontact-no-stop-output
     refresh: 1s
   # - source:
   #     type: local

@@ -65,9 +65,16 @@ void RATGDOCover::on_door_state(DoorState state, float position)
 CoverTraits RATGDOCover::get_traits()
 {
     auto traits = CoverTraits();
-    traits.set_supports_stop(true);
+#ifdef PROTOCOL_DRYCONTACT
+    // Dry contact has no stop output (D8 opens, D1 closes): offer open and close only.
+    // A positioned move ends in a stop, so it cannot hold a part-way position either.
+    const bool can_stop = false;
+#else
+    const bool can_stop = true;
+#endif
+    traits.set_supports_stop(can_stop);
     traits.set_supports_toggle(true);
-    traits.set_supports_position(true);
+    traits.set_supports_position(can_stop);
     return traits;
 }
 

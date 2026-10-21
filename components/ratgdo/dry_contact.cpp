@@ -133,6 +133,30 @@ namespace dry_contact {
             return;
         }
 
+        // There is no stop output on this wiring (D8 opens, D1 closes). A STOP that fell
+        // through to D1 below fired CLOSE, so the gate reversed and closed instead of
+        // stopping, and every positioned move (which ends in a STOP) closed it again.
+        if (action == DoorAction::STOP) {
+            ESP_LOGW(TAG, "No stop output on dry contact; ignoring STOP");
+            return;
+        }
+
+        // TOGGLE follows the limits: open from closed, otherwise close.
+        if (action == DoorAction::TOGGLE && this->discrete_open_pin_ != nullptr) {
+#ifdef RATGDO_USE_ENCODER
+            const bool closed = *this->ratgdo_->door_state == DoorState::CLOSED;
+#else
+            const bool closed = this->limits_.close_limit_reached;
+#endif
+            if (closed) {
+                this->discrete_open_pin_->digital_write(1);
+                this->ratgdo_->set_timeout(500, [this] {
+                    this->discrete_open_pin_->digital_write(0);
+                });
+                return;
+            }
+        }
+
         // Use the former single-button output as the fallback action output.
         // On the v2.5i custom dry-contact configuration this makes D1 the
         // dedicated CLOSE output while D8 remains the dedicated OPEN output.
